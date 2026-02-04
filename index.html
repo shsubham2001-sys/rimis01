@@ -3,68 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rimi Birthday</title>
+  <title>Rimi Fullscreen</title>
 
   <style>
     body{
       margin:0;
       background:#000;
-      font-family: Arial, sans-serif;
       overflow:hidden;
+      font-family: Arial, sans-serif;
     }
 
-    /* ✅ Top greetings */
+    /* ✅ Fullscreen slideshow container */
+    .slideshow{
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .slide{
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide.active{
+      opacity: 1;
+    }
+
+    .slide img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;       /* ✅ Fullscreen fill */
+      object-position: center;
+      display: block;
+    }
+
+    /* ✅ Dark overlay for text readability */
+    .overlay{
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.65), rgba(0,0,0,0.15), rgba(0,0,0,0.65));
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* ✅ Greetings text */
     .top{
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      padding: 14px 10px 10px 10px;
+      padding: 16px 10px 10px 10px;
       text-align: center;
-      z-index: 50;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0));
+      z-index: 3;
+      pointer-events: none;
     }
 
     #greetText{
-      color:#fff;
-      font-size: 22px;
+      color: #fff;
+      font-size: 24px;
       font-weight: 800;
-      text-shadow: 0 0 12px rgba(255,255,255,0.85);
+      text-shadow: 0 0 12px rgba(255,255,255,0.9);
     }
 
     #subText{
-      margin-top: 4px;
+      margin-top: 5px;
       color: rgba(255,255,255,0.85);
-      font-size: 13px;
+      font-size: 14px;
       text-shadow: 0 0 10px rgba(255,255,255,0.3);
-    }
-
-    /* ✅ Perfect 6 photo grid (no extra tall middle) */
-    .collage{
-      width: 100vw;
-      height: 100vh;
-      padding: 80px 12px 70px 12px; /* top greetings + bottom music space */
-      box-sizing: border-box;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .photo{
-      border-radius: 22px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 0 18px rgba(255,255,255,0.08);
-      background: #111;
-    }
-
-    .photo img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* ✅ clean collage */
-      object-position: center;
-      display: block;
     }
 
     /* ✅ Music button */
@@ -72,7 +79,7 @@
       position: fixed;
       bottom: 16px;
       right: 16px;
-      z-index: 60;
+      z-index: 5;
       padding: 12px 18px;
       border: none;
       border-radius: 14px;
@@ -83,25 +90,52 @@
       cursor: pointer;
       box-shadow: 0 0 15px rgba(255,77,109,0.7);
     }
+
+    /* ✅ Dots indicator */
+    .dots{
+      position: fixed;
+      bottom: 18px;
+      left: 16px;
+      z-index: 5;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .dot{
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+    }
+
+    .dot.active{
+      background: #fff;
+    }
   </style>
 </head>
 <body>
 
+  <!-- ✅ Slideshow -->
+  <div class="slideshow" id="slideshow">
+    <div class="slide active"><img src="1.jpg" alt="1"></div>
+    <div class="slide"><img src="2.jpg" alt="2"></div>
+    <div class="slide"><img src="3.jpg" alt="3"></div>
+    <div class="slide"><img src="4.jpg" alt="4"></div>
+    <div class="slide"><img src="5.jpg" alt="5"></div>
+    <div class="slide"><img src="6.jpg" alt="6"></div>
+  </div>
+
+  <div class="overlay"></div>
+
   <!-- ✅ Greetings -->
   <div class="top">
     <div id="greetText">🎂 Happy Birthday Rimi ❤️</div>
-    <div id="subText">✨ You are special ✨</div>
+    <div id="subText">✨ Today is your special day ✨</div>
   </div>
 
-  <!-- ✅ Perfect 6 Photo Collage -->
-  <div class="collage">
-    <div class="photo"><img src="1.jpg" alt="1"></div>
-    <div class="photo"><img src="2.jpg" alt="2"></div>
-    <div class="photo"><img src="3.jpg" alt="3"></div>
-    <div class="photo"><img src="4.jpg" alt="4"></div>
-    <div class="photo"><img src="5.jpg" alt="5"></div>
-    <div class="photo"><img src="6.jpg" alt="6"></div>
-  </div>
+  <!-- ✅ Dots -->
+  <div class="dots" id="dots"></div>
 
   <!-- ✅ Music -->
   <audio id="bgMusic" loop>
@@ -111,7 +145,7 @@
   <button class="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
 
   <script>
-    // ✅ Auto changing greetings
+    // ✅ Greeting list
     const greetings = [
       { main: "🎂 Happy Birthday Rimi ❤️", sub: "✨ Today is your special day ✨" },
       { main: "💖 You are my Happiness 💖", sub: "Always stay smiling 😊" },
@@ -121,17 +155,40 @@
       { main: "🎁 Enjoy your day 🎁", sub: "Lots of love ❤️" }
     ];
 
-    let gIndex = 0;
+    const slides = document.querySelectorAll(".slide");
     const greetText = document.getElementById("greetText");
     const subText = document.getElementById("subText");
+    const dotsWrap = document.getElementById("dots");
 
+    let index = 0;
+
+    // ✅ Create dots
+    slides.forEach((_, i) => {
+      const d = document.createElement("div");
+      d.className = "dot" + (i === 0 ? " active" : "");
+      dotsWrap.appendChild(d);
+    });
+    const dots = document.querySelectorAll(".dot");
+
+    function showSlide(i){
+      slides.forEach(s => s.classList.remove("active"));
+      dots.forEach(d => d.classList.remove("active"));
+
+      slides[i].classList.add("active");
+      dots[i].classList.add("active");
+
+      // ✅ Greeting also changes with slide
+      greetText.innerText = greetings[i % greetings.length].main;
+      subText.innerText = greetings[i % greetings.length].sub;
+    }
+
+    // ✅ Auto change every 3 sec
     setInterval(() => {
-      gIndex = (gIndex + 1) % greetings.length;
-      greetText.innerText = greetings[gIndex].main;
-      subText.innerText = greetings[gIndex].sub;
-    }, 2500);
+      index = (index + 1) % slides.length;
+      showSlide(index);
+    }, 3000);
 
-    // ✅ Music play/pause
+    // ✅ Music
     const music = document.getElementById("bgMusic");
     const btn = document.querySelector(".music-btn");
 
