@@ -3,85 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rimi Birthday Collage</title>
+  <title>Rimi Birthday</title>
 
   <style>
     body{
       margin:0;
       background:#000;
-      overflow:hidden;
       font-family: Arial, sans-serif;
+      overflow:hidden;
     }
 
-    /* ✅ Greeting Text */
-    .text{
+    /* ✅ Top greetings */
+    .top{
       position: fixed;
-      top: 12px;
+      top: 0;
+      left: 0;
       width: 100%;
+      padding: 14px 10px 10px 10px;
       text-align: center;
-      color: white;
+      z-index: 50;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0));
+    }
+
+    #greetText{
+      color:#fff;
       font-size: 22px;
-      font-weight: bold;
-      text-shadow: 0 0 12px rgba(255,255,255,0.9);
-      z-index: 10;
-      pointer-events: none;
-      padding: 0 10px;
-      box-sizing: border-box;
+      font-weight: 800;
+      text-shadow: 0 0 12px rgba(255,255,255,0.85);
     }
 
-    /* ✅ Small sub text */
-    .subtext{
-      position: fixed;
-      top: 45px;
-      width: 100%;
-      text-align: center;
+    #subText{
+      margin-top: 4px;
       color: rgba(255,255,255,0.85);
-      font-size: 14px;
-      text-shadow: 0 0 10px rgba(255,255,255,0.4);
-      z-index: 10;
-      pointer-events: none;
+      font-size: 13px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
+    /* ✅ Perfect 6 photo grid (no extra tall middle) */
     .collage{
       width: 100vw;
       height: 100vh;
-      padding: 12px;
+      padding: 80px 12px 70px 12px; /* top greetings + bottom music space */
       box-sizing: border-box;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 12px;
     }
 
     .photo{
-      width: 100%;
-      height: 100%;
       border-radius: 22px;
       overflow: hidden;
-      background: #0b0b0b;
-      box-shadow: 0 0 14px rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 0 18px rgba(255,255,255,0.08);
+      background: #111;
     }
 
-    /* ✅ Clean look */
     .photo img{
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: cover; /* ✅ clean collage */
       object-position: center;
-      transition: transform 0.35s ease;
-    }
-
-    .photo:hover img{
-      transform: scale(1.05);
-    }
-
-    /* ✅ Middle big */
-    .photo.big{
-      grid-column: 2 / 3;
-      grid-row: 1 / 3;
-      border: 1px solid rgba(255, 77, 109, 0.45);
-      box-shadow: 0 0 25px rgba(255, 77, 109, 0.25);
+      display: block;
     }
 
     /* ✅ Music button */
@@ -89,7 +72,7 @@
       position: fixed;
       bottom: 16px;
       right: 16px;
-      z-index: 10;
+      z-index: 60;
       padding: 12px 18px;
       border: none;
       border-radius: 14px;
@@ -105,18 +88,18 @@
 <body>
 
   <!-- ✅ Greetings -->
-  <div class="text" id="greetText">🎂 Happy Birthday Rimi ❤️</div>
-  <div class="subtext" id="subText">✨ You are special ✨</div>
+  <div class="top">
+    <div id="greetText">🎂 Happy Birthday Rimi ❤️</div>
+    <div id="subText">✨ You are special ✨</div>
+  </div>
 
-  <!-- ✅ Collage -->
+  <!-- ✅ Perfect 6 Photo Collage -->
   <div class="collage">
     <div class="photo"><img src="1.jpg" alt="1"></div>
     <div class="photo"><img src="2.jpg" alt="2"></div>
     <div class="photo"><img src="3.jpg" alt="3"></div>
-
-    <div class="photo big"><img src="5.jpg" alt="5"></div>
-
     <div class="photo"><img src="4.jpg" alt="4"></div>
+    <div class="photo"><img src="5.jpg" alt="5"></div>
     <div class="photo"><img src="6.jpg" alt="6"></div>
   </div>
 
@@ -128,26 +111,25 @@
   <button class="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
 
   <script>
-    // ✅ Greetings list
+    // ✅ Auto changing greetings
     const greetings = [
       { main: "🎂 Happy Birthday Rimi ❤️", sub: "✨ Today is your special day ✨" },
       { main: "💖 You are my Happiness 💖", sub: "Always stay smiling 😊" },
-      { main: "🌸 You are so Beautiful 🌸", sub: "Like a queen 👑" },
-      { main: "🥰 I Feel Lucky to have you 🥰", sub: "Forever together 🤝" },
-      { main: "💝 My Love for You is Endless 💝", sub: "Miss you so much 😘" },
-      { main: "🎁 Enjoy Your Day Rimi 🎁", sub: "Lots of love ❤️" }
+      { main: "🌸 You are so Beautiful 🌸", sub: "You look like a queen 👑" },
+      { main: "🥰 Lucky to have you 🥰", sub: "Forever together 🤝" },
+      { main: "💝 My Love for You 💝", sub: "Miss you so much 😘" },
+      { main: "🎁 Enjoy your day 🎁", sub: "Lots of love ❤️" }
     ];
 
     let gIndex = 0;
     const greetText = document.getElementById("greetText");
     const subText = document.getElementById("subText");
 
-    // ✅ Change greeting every 3 seconds
     setInterval(() => {
       gIndex = (gIndex + 1) % greetings.length;
       greetText.innerText = greetings[gIndex].main;
       subText.innerText = greetings[gIndex].sub;
-    }, 3000);
+    }, 2500);
 
     // ✅ Music play/pause
     const music = document.getElementById("bgMusic");
