@@ -13,6 +13,7 @@
       font-family: Arial, sans-serif;
     }
 
+    /* ✅ Greeting Text */
     .text{
       position: fixed;
       top: 12px;
@@ -21,12 +22,26 @@
       color: white;
       font-size: 22px;
       font-weight: bold;
-      text-shadow: 0 0 10px rgba(255,255,255,0.8);
+      text-shadow: 0 0 12px rgba(255,255,255,0.9);
+      z-index: 10;
+      pointer-events: none;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+
+    /* ✅ Small sub text */
+    .subtext{
+      position: fixed;
+      top: 45px;
+      width: 100%;
+      text-align: center;
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.4);
       z-index: 10;
       pointer-events: none;
     }
 
-    /* ✅ Premium grid */
     .collage{
       width: 100vw;
       height: 100vh;
@@ -38,7 +53,6 @@
       gap: 10px;
     }
 
-    /* ✅ Box style */
     .photo{
       width: 100%;
       height: 100%;
@@ -47,32 +61,30 @@
       background: #0b0b0b;
       box-shadow: 0 0 14px rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.12);
-      position: relative;
     }
 
-    /* ✅ No crop (full photo visible) */
+    /* ✅ Clean look */
     .photo img{
       width: 100%;
       height: 100%;
-      object-fit: contain; /* ✅ crop hobe na */
-      background: #000;
+      object-fit: cover;
+      object-position: center;
       transition: transform 0.35s ease;
     }
 
-    /* ✅ Slight hover zoom */
     .photo:hover img{
       transform: scale(1.05);
     }
 
-    /* ✅ Middle photo big */
+    /* ✅ Middle big */
     .photo.big{
       grid-column: 2 / 3;
-      grid-row: 1 / 3;  /* ✅ 2 row span */
-      border: 1px solid rgba(255, 77, 109, 0.35);
-      box-shadow: 0 0 22px rgba(255, 77, 109, 0.20);
+      grid-row: 1 / 3;
+      border: 1px solid rgba(255, 77, 109, 0.45);
+      box-shadow: 0 0 25px rgba(255, 77, 109, 0.25);
     }
 
-    /* ✅ Music Button */
+    /* ✅ Music button */
     .music-btn{
       position: fixed;
       bottom: 16px;
@@ -92,15 +104,16 @@
 </head>
 <body>
 
-  <div class="text">🎂 Happy Birthday Rimi ❤️</div>
+  <!-- ✅ Greetings -->
+  <div class="text" id="greetText">🎂 Happy Birthday Rimi ❤️</div>
+  <div class="subtext" id="subText">✨ You are special ✨</div>
 
-  <!-- ✅ Premium 6 photo collage -->
+  <!-- ✅ Collage -->
   <div class="collage">
     <div class="photo"><img src="1.jpg" alt="1"></div>
     <div class="photo"><img src="2.jpg" alt="2"></div>
     <div class="photo"><img src="3.jpg" alt="3"></div>
 
-    <!-- ✅ Middle big photo (5.jpg) -->
     <div class="photo big"><img src="5.jpg" alt="5"></div>
 
     <div class="photo"><img src="4.jpg" alt="4"></div>
@@ -115,6 +128,28 @@
   <button class="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
 
   <script>
+    // ✅ Greetings list
+    const greetings = [
+      { main: "🎂 Happy Birthday Rimi ❤️", sub: "✨ Today is your special day ✨" },
+      { main: "💖 You are my Happiness 💖", sub: "Always stay smiling 😊" },
+      { main: "🌸 You are so Beautiful 🌸", sub: "Like a queen 👑" },
+      { main: "🥰 I Feel Lucky to have you 🥰", sub: "Forever together 🤝" },
+      { main: "💝 My Love for You is Endless 💝", sub: "Miss you so much 😘" },
+      { main: "🎁 Enjoy Your Day Rimi 🎁", sub: "Lots of love ❤️" }
+    ];
+
+    let gIndex = 0;
+    const greetText = document.getElementById("greetText");
+    const subText = document.getElementById("subText");
+
+    // ✅ Change greeting every 3 seconds
+    setInterval(() => {
+      gIndex = (gIndex + 1) % greetings.length;
+      greetText.innerText = greetings[gIndex].main;
+      subText.innerText = greetings[gIndex].sub;
+    }, 3000);
+
+    // ✅ Music play/pause
     const music = document.getElementById("bgMusic");
     const btn = document.querySelector(".music-btn");
 
